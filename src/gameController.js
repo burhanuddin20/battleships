@@ -58,6 +58,12 @@ class GameController {
     // A game is initialized when a player has 3 ships on their board
     return player.gameboard.ships.length === 3;
   }
+
+  resetGame() {
+    this.player1 = new HumanPlayer("player-1");
+    this.player2 = new ComputerPlayer("player-2");
+    return this.init();
+  }
 }
 
 export default GameController;

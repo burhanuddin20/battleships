@@ -106,7 +106,40 @@ class DOMController {
     const message = document.createElement("div");
     message.textContent = `${player.name} wins!`;
     message.classList.add("winner-message");
+    
+    const resetButton = document.createElement("button");
+    resetButton.textContent = "Play Again";
+    resetButton.classList.add("reset-button");
+    resetButton.addEventListener("click", () => this.resetGame());
+    
+    message.appendChild(resetButton);
     document.body.appendChild(message);
+  }
+
+  resetGame() {
+    // Remove winner message
+    const winnerMessage = document.querySelector(".winner-message");
+    if (winnerMessage) {
+      winnerMessage.remove();
+    }
+    
+    // Clear both gameboards
+    document.querySelector(".player-1").innerHTML = '<div class="title"><h2>Player 1</h2></div>';
+    document.querySelector(".player-2").innerHTML = '<div class="title"><h2>Player 2</h2></div>';
+    
+    // Reinitialize the game
+    const players = this.gameController.resetGame();
+    this.initializeBoards();
+    
+    // Setup new game
+    this.setupShipPlacement(players.player1)
+      .then(() => {
+        const computerShips = players.player2.addRandomShips();
+        this.displayComputerShips(computerShips, players.player2.name);
+      })
+      .then(() => {
+        this.gameController.startGame(this);
+      });
   }
 }
 
