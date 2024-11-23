@@ -16,6 +16,7 @@ class HumanPlayer extends Player {
   constructor(name) {
     super(name);
     this.currentHandler = null;
+    this.isMyTurn = true;
   }
 
   async takeTurn(enemy) {
@@ -28,7 +29,7 @@ class HumanPlayer extends Player {
       }
 
       const handleClick = (event) => {
-        if (!event.target.classList.contains("grid-cell")) return;
+        if (!this.isMyTurn || !event.target.classList.contains("grid-cell")) return;
 
         const cell = event.target;
         const x = parseInt(cell.dataset.row);
@@ -39,7 +40,7 @@ class HumanPlayer extends Player {
           !cell.hasAttribute("data-attacked") ||
           (targetShip instanceof Ship && !targetShip.isSunk())
         ) {
-          console.log(x, y);
+          this.isMyTurn = false;
           cell.setAttribute("data-attacked", "true");
           const result = this.attack(enemy, x, y);
 

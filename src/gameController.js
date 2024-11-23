@@ -22,7 +22,7 @@ class GameController {
 
   async startGame(domController) {
     while (!this.isGameOver()) {
-      // Player 1's turn
+      this.player1.isMyTurn = true; // Reset turn flag
       const [x, y, result] = await this.player1.takeTurn(this.player2);
       domController.updateCell(x, y, result, this.player2.name);
       
@@ -31,7 +31,6 @@ class GameController {
         break;
       }
 
-      // Computer's turn
       await new Promise(resolve => setTimeout(resolve, 1000));
       const [compX, compY, compResult] = await this.player2.takeTurn(this.player1);
       domController.updateCell(compX, compY, compResult, this.player1.name);
