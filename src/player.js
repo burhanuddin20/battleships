@@ -29,7 +29,8 @@ class HumanPlayer extends Player {
       }
 
       const handleClick = (event) => {
-        if (!this.isMyTurn || !event.target.classList.contains("grid-cell")) return;
+        if (!this.isMyTurn || !event.target.classList.contains("grid-cell"))
+          return;
 
         const cell = event.target;
         const x = parseInt(cell.dataset.row);
@@ -78,12 +79,20 @@ class ComputerPlayer extends Player {
 
   addRandomShips() {
     const shipCoordinates = [];
-    for (let i = 0; i < 3; i++) {
+    const usedCoordinates = new Set();
+
+    while (shipCoordinates.length < 3) {
       const x = Math.floor(Math.random() * 3);
       const y = Math.floor(Math.random() * 3);
-      shipCoordinates.push([x, y]);
-      this.gameboard.placeShip(x, y);
+      const coordKey = `${x},${y}`;
+
+      if (!usedCoordinates.has(coordKey)) {
+        usedCoordinates.add(coordKey);
+        shipCoordinates.push([x, y]);
+        this.gameboard.placeShip(x, y);
+      }
     }
+
     return shipCoordinates;
   }
 }
