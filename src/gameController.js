@@ -53,6 +53,11 @@ class GameController {
     const player = playerName === "player-1" ? this.player1 : this.player2;
     return player.gameboard.board[x][y];
   }
+
+  gameInitialized(player) {
+    // A game is initialized when a player has 3 ships on their board
+    return player.gameboard.ships.length === 3;
+  }
 }
 
 export default GameController;
